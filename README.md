@@ -1,3 +1,7 @@
+## Support
+If you like my work, consider supporting me:
+[Buy me a coffee ☕](https://www.buymeacoffee.com/watchdogalert)
+
 # Text Encrypt/Decrypt Chrome Extension
 
 A Chrome extension that allows you to encrypt and decrypt selected text on any webpage using AES encryption with a shared secret key.
