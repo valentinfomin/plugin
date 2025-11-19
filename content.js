@@ -123,7 +123,7 @@ async function decryptText(text, keyword) {
 
     const key = CryptoJS.PBKDF2(keyword, salt, {
       keySize: 8,
-      iterations: 310000 // Must match encryption
+      iterations: 10000 // Must match encryption
     });
 
     const decrypted = CryptoJS.AES.decrypt(
