@@ -16,20 +16,29 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
-chrome.contextMenus.onClicked.addListener((info, tab) => {
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+  if (!tab.id) return;
+
+  // Inject scripts first for all actions
+  try {
+    await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      files: ["crypto-js.min.js", "content.js"]
+    });
+  } catch (err) {
+    console.error("Script injection failed:", err);
+    return;
+  }
+
   if (info.menuItemId === "encrypt" || info.menuItemId === "decrypt") {
     chrome.storage.sync.get(['encryptionKey'], (result) => {
-      chrome.tabs.update(tab.id, { active: true }, () => {
-        chrome.tabs.sendMessage(tab.id, {
-          action: info.menuItemId,
-          keyword: result.encryptionKey || null
-        });
+      chrome.tabs.sendMessage(tab.id, {
+        action: info.menuItemId,
+        keyword: result.encryptionKey || null
       });
     });
   } else if (info.menuItemId === "changeKey") {
-    chrome.tabs.update(tab.id, { active: true }, () => {
-      chrome.tabs.sendMessage(tab.id, { action: "changeKey" });
-    });
+    chrome.tabs.sendMessage(tab.id, { action: "changeKey" });
   }
 });
 
