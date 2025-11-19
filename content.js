@@ -96,7 +96,7 @@ async function encryptText(text, keyword) {
 
   const key = CryptoJS.PBKDF2(keyword, salt, {
     keySize: 8, // 256 bits
-    iterations: 310000 // Increased security
+    iterations: 10000 // Reverted for performance
   });
 
   const encrypted = CryptoJS.AES.encrypt(text, key, {
